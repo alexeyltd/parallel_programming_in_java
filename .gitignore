@@ -23,3 +23,6 @@ hs_err_pid*
 
 # stupid mac files
 .DS_Store
+
+# octave workspace files
+octave-workspace
