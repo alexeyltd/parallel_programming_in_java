@@ -158,8 +158,7 @@ public final class ReciprocalArraySum {
         double sum = 0;
 	ReciprocalArraySumTask[] tasks = new ReciprocalArraySumTask[numTasks];
 	for (int i = 0; i<numTasks; i++) tasks[i] = new ReciprocalArraySumTask(getChunkStartInclusive(i,numTasks,input.length), getChunkEndExclusive(i,numTasks,input.length), input);
-	java.util.concurrent.ForkJoinPool pool = new java.util.concurrent.ForkJoinPool(numTasks);
-	pool.invoke(new RecursiveAction() {
+	(new java.util.concurrent.ForkJoinPool(numTasks)).invoke(new RecursiveAction() {
 		@Override protected void compute () {
 		    invokeAll(java.util.Arrays.asList(tasks));}});
 	for (ReciprocalArraySumTask t : tasks) sum+=t.getValue();
