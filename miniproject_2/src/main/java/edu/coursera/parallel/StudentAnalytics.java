@@ -42,8 +42,8 @@ public final class StudentAnalytics {
      * @return Average age of enrolled students
      */
     public double averageAgeOfEnrolledStudentsParallelStream(final Student[] studentArray) {
-	return Arrays.asList(studentArray)
-	    .parallelStream()
+	return Stream.of(studentArray)
+	    .parallel()
 	    .filter(s->s.checkIsCurrent())
 	    .mapToDouble(Student::getAge)
 	    .average()
@@ -100,10 +100,10 @@ public final class StudentAnalytics {
      * @return Most common first name of inactive students
      */
     public String mostCommonFirstNameOfInactiveStudentsParallelStream(final Student[] studentArray) {
-	return Arrays.asList(studentArray)
-	    .parallelStream()
+	return Stream.of(studentArray)
+	    .parallel()
 	    .filter(s->!s.checkIsCurrent())
-	    .collect(Collectors.groupingBy(s->s.getFirstName(), Collectors.counting()))
+	    .collect(Collectors.groupingBy(Student::getFirstName, Collectors.counting()))
 	    .entrySet()
 	    .parallelStream()
 	    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -144,8 +144,8 @@ public final class StudentAnalytics {
      * @return Number of failed grades from students older than 20 years old.
      */
     public int countNumberOfFailedStudentsOlderThan20ParallelStream(final Student[] studentArray) {
-	return Math.toIntExact(Arrays.asList(studentArray)
-			       .parallelStream()
+	return Math.toIntExact(Stream.of(studentArray)
+			       .parallel()
 			       .filter(s->!s.checkIsCurrent())
 			       .filter(s->s.getAge()>20)
 			       .filter(s->s.getGrade()<65)
