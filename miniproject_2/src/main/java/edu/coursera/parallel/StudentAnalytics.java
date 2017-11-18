@@ -1,7 +1,10 @@
 package edu.coursera.parallel;
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  * A simple wrapper class for various analytics methods.
@@ -15,7 +18,7 @@ public final class StudentAnalytics {
      * @return Average age of enrolled students
      */
     public double averageAgeOfEnrolledStudentsImperative(
-							 final Student[] studentArray) {
+            final Student[] studentArray) {
         List<Student> activeStudents = new ArrayList<Student>();
 
         for (Student s : studentArray) {
@@ -41,13 +44,9 @@ public final class StudentAnalytics {
      * @param studentArray Student data for the class.
      * @return Average age of enrolled students
      */
-    public double averageAgeOfEnrolledStudentsParallelStream(final Student[] studentArray) {
-	return Stream.of(studentArray)
-	    .parallel()
-	    .filter(s->s.checkIsCurrent())
-	    .mapToDouble(Student::getAge)
-	    .average()
-	    .getAsDouble();
+    public double averageAgeOfEnrolledStudentsParallelStream(
+            final Student[] studentArray) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -58,7 +57,7 @@ public final class StudentAnalytics {
      * @return Most common first name of inactive students
      */
     public String mostCommonFirstNameOfInactiveStudentsImperative(
-								  final Student[] studentArray) {
+            final Student[] studentArray) {
         List<Student> inactiveStudents = new ArrayList<Student>();
 
         for (Student s : studentArray) {
@@ -72,7 +71,7 @@ public final class StudentAnalytics {
         for (Student s : inactiveStudents) {
             if (nameCounts.containsKey(s.getFirstName())) {
                 nameCounts.put(s.getFirstName(),
-			       new Integer(nameCounts.get(s.getFirstName()) + 1));
+                        new Integer(nameCounts.get(s.getFirstName()) + 1));
             } else {
                 nameCounts.put(s.getFirstName(), 1);
             }
@@ -99,17 +98,9 @@ public final class StudentAnalytics {
      * @param studentArray Student data for the class.
      * @return Most common first name of inactive students
      */
-    public String mostCommonFirstNameOfInactiveStudentsParallelStream(final Student[] studentArray) {
-	return Stream.of(studentArray)
-	    .parallel()
-	    .filter(s->!s.checkIsCurrent())
-	    .collect(Collectors.groupingBy(Student::getFirstName, Collectors.counting()))
-	    .entrySet()
-	    .parallelStream()
-	    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-	    .findFirst()
-	    .get()
-	    .getKey();
+    public String mostCommonFirstNameOfInactiveStudentsParallelStream(
+            final Student[] studentArray) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -122,7 +113,7 @@ public final class StudentAnalytics {
      * @return Number of failed grades from students older than 20 years old.
      */
     public int countNumberOfFailedStudentsOlderThan20Imperative(
-								final Student[] studentArray) {
+            final Student[] studentArray) {
         int count = 0;
         for (Student s : studentArray) {
             if (!s.checkIsCurrent() && s.getAge() > 20 && s.getGrade() < 65) {
@@ -143,12 +134,8 @@ public final class StudentAnalytics {
      * @param studentArray Student data for the class.
      * @return Number of failed grades from students older than 20 years old.
      */
-    public int countNumberOfFailedStudentsOlderThan20ParallelStream(final Student[] studentArray) {
-	return Math.toIntExact(Stream.of(studentArray)
-			       .parallel()
-			       .filter(s->!s.checkIsCurrent())
-			       .filter(s->s.getAge()>20)
-			       .filter(s->s.getGrade()<65)
-			       .count());
+    public int countNumberOfFailedStudentsOlderThan20ParallelStream(
+            final Student[] studentArray) {
+        throw new UnsupportedOperationException();
     }
 }
